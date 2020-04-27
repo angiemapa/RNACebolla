@@ -1,4 +1,3 @@
-
 import numpy as np
 import os
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -13,13 +12,11 @@ import matplotlib.image as mping
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.optimizers import Adam 
 
-
 k.clear_session()
 #colocamos la ruta donde esta la carpeta de las imagenes
-pat = (r"C:\Users\PAOLITA\Pictures\Datos Cebolla\prueba")
-datos_entrenamiento = (r"C:\Users\PAOLITA\Pictures\Datos Cebolla\entrenamiento")
-datos_validacion = (r"C:\Users\PAOLITA\Pictures\Datos Cebolla\Validacion")
-
+pat = (r".\prueba")
+datos_entrenamiento = (r".\Validacion\faseA")
+datos_validacion = (r".\Validacion\faseC")
 
 epocas = 50
 longitud, altura = 150,150#redimencionar el tamaño de la imagen
@@ -31,7 +28,6 @@ size_filtro2 = (2,2)
 size_pool = (2,2)#para mejorar el vance de la convolucio
 netapas = 2 #debemos colocar todas las etapcas que vamos a evaluar de nuestro planta 
 lr = 0.0004 #tendremo que ir probando con el error para ver cual esta el mejor resultado
-
 
 #Restructurando nuestos datos de imagenes
 entrenamiento_restructurada = ImageDataGenerator(
@@ -50,7 +46,6 @@ imagen_entrenamiento = entrenamiento_restructurada.flow_from_directory(
     batch_size = batch_size,
     class_mode = 'categorical')
 
-
 imagen_validacion = validacion_restructurada.flow_from_directory(
     datos_validacion,
     target_size= (altura,longitud),
@@ -61,7 +56,6 @@ print(imagen_entrenamiento.class_indices)
 pasos_entrenamiento = imagen_entrenamiento.n//imagen_entrenamiento.batch_size
 pasos_validacion = imagen_validacion.n//imagen_validacion.batch_size
 print(pasos_entrenamiento,pasos_validacion)
-
 
 #Creamos la red neuronal convolucional
 
@@ -86,7 +80,6 @@ cnn.add(Dense(256, activation='relu'))
 cnn.add(Dropout(0.5))
 cnn.add(Dense(netapas, activation='softmax'))        
 
-
 cnn.compile(loss='categorical_crossentropy',
             optimizer='sgd', 
             metrics=['accuracy'])
@@ -96,19 +89,12 @@ H = cnn.fit_generator(imagen_entrenamiento,
                      epochs=epocas,
                      validation_data=imagen_validacion,
                      validation_steps=pasos_validacion)
-target_dir = r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modeloc'
-if not os.path.exists(target_dir):
-  os.mkdir(target_dir)
-cnn.save(r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modeloc\modelo.h5')
-cnn.save_weights(r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modeloc\pesos.h5')
 
 
 #ruta carpeta para guardar modelo
-target_dir = r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modelo'
+target_dir = r'.\modelo'
 #si no existe, lo guarda
 if not os.path.exists(target_dir):
   os.mkdir(target_dir)
-cnn.save(r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modelo\modelo.h5') #nombre modelo
-cnn.save_weights(r'C:\Users\PAOLITA\Documents\Pao\URL\2020\IA\modelo\pesos.h5') #nombre pesos
-
-
+cnn.save(r'.\modelo\modelo.h5') #nombre modelo
+cnn.save_weights(r'.\modelo\pesos.h5') #nombre pesos
