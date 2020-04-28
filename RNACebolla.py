@@ -68,8 +68,9 @@ cnn.add(Convolution2D(64, #cambie 64
 cnn.add(MaxPooling2D(pool_size=(2, 2)))
 
 cnn.add(Convolution2D(128, kernel_size=(3, 3), activation='relu')) #128
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
 cnn.add(Convolution2D(256, kernel_size=(3, 3), activation='relu')) #256
-
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
 cnn.add(Convolution2D(512, kernel_size=(3, 3), activation='relu'))
 cnn.add(MaxPooling2D(pool_size=(2, 2)))
 cnn.add(Convolution2D(1024, kernel_size=(3, 3), activation='relu'))
